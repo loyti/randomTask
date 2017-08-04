@@ -1,0 +1,121 @@
+<html>
+<head>
+  <link rel='stylesheet' type='text/css' href='./style.css'>
+  <link rel='stylesheet' type='text/css' href='./bootstrap.css'>
+  <link rel='stylesheet' type='text/css' href='./bootstrap-theme.css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type ="text/javascript">
+    $(document).ready(function (){
+      // this triggers the connection event in our server!
+      var socket  = io.connect();
+      // we'll write all the socket stuff after the above line!
+      $('#surveyForm').submit(function (e){
+        e.preventDefault();
+        socket.emit("postingForm", {
+          name: $('#fullname').val(),
+          dojoLoc: $('#dojoLoca').val(),
+          favLang: $('#favLangu').val(),
+          comments: $('#uComments').val(),
+          });
+        });
+      socket.on('updated_message', function (newData){
+			  $('#message').html("You emitted the following information to the server: " + newData.response.name + " " + newData.response.dojoLoc + " " + newData.response.favLang + " " + newData.response.comments + " " + JSON.stringify(newData.response));
+			});
+			socket.on('random_number', function (newData){
+			  $('#number').html("Your lucky number emitted by the server is : " + JSON.stringify(newData.response));
+			});
+    });
+  </script>
+
+</head>
+<body>
+  <nav class="navbar-inverse">
+      <div class="container-fluid">
+          <div class="navbar-header">
+            <img id="logo" class="icon-bar" src="https://github.com/loyti/images/blob/master/white+t%20(1).png?raw=true">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          </div>
+          <h3 class="navbar-brand" id="heading_name" style="margin-top:0px; margin-bottom:0px;">Random Task</h3>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/">Home</a></li>
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/users">Users</a></li>
+                <li><a style="margin-top:0px; margin-bottom:0px;" class="nav-link top_space" href="/count">Counter</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-1"></div>
+      <div id="usersHead" class="col-md-10 jumbotron">
+        <h1><%= stitle %></h1>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h2>Survey Entry Results</h2>
+        <hr>
+        <div id="message"></div>
+	      <div id="number"></div>
+        <hr>
+        <button class="btn btn-success"><a href="/survey">Go Back</a></button>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <form action='/survey' class="form-horizontal" method='post' id="surveyForm">
+          <div class="form-group">
+            <label>Full Name:
+              <input class="form-control" type='text' id='fullname' name='fullname'>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Dojo Location: </label>
+            <select class="form-control" id="dojoLoca" name="dojoLoc">
+              <option>Silicon Valley</option>
+              <option>Seattle</option>
+              <option>Los Angeles</option>
+              <option>Dallas</option>
+              <option>Washington, D.C.</option>
+              <option>Chicago</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Favorite Language: </label>
+            <select class="form-control" id="favLangu" name="favLang">
+              <option>C</option>
+              <option>Python</option>
+              <option>JavaScript</option>
+              <option>Java</option>
+              <option>Ruby</option>
+              <option>iOS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Comments: </label>
+            <textarea class="form-control" rows="5" id="uComments" name="comments"></textarea>
+          </div>
+            <input type='submit' class="btn btn-success" value='Send Survey'>
+        </form>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</body>
+</html>

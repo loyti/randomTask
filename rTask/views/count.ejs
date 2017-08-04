@@ -1,0 +1,94 @@
+<html>
+<head>
+  <link rel='stylesheet' type='text/css' href='./style.css'>
+  <link rel='stylesheet' type='text/css' href='./bootstrap.css'>
+  <link rel='stylesheet' type='text/css' href='./bootstrap-theme.css'>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type ="text/javascript">
+
+  $(document).ready(function (){
+    // this triggers the connection event in our server!
+    var socket  = io.connect('http://localhost:8000');
+
+      // we'll write all the socket stuff after the above line!
+      $('#countingUp').on('submit', function(e){
+        e.preventDefault();
+        socket.emit("countUp", {countChange: "Counting Up"});
+      });
+      socket.on("serverCount", function(countChange) {
+          $('#uCounter').html(countChange.response);
+      });
+      $('#countingDown').on('submit', function(e){
+        e.preventDefault();
+        socket.emit("countDown", {countChange: "Counting Down"});
+      });
+      socket.on("serverCount", function(countChange) {
+        $('#uCounter').html(countChange.response);
+      });
+      $('#countingReset').on('submit', function(e){
+        e.preventDefault();
+        socket.emit("countReset", {countChange: "Count Reset"});
+      });
+      socket.on("serverCountReset", function(countChange) {
+        $('#uCounter').html(countChange.zero);
+      });
+    });
+
+  </script>
+
+</head>
+<body>
+  <nav class="navbar-inverse">
+      <div class="container-fluid">
+          <div class="navbar-header">
+            <img id="logo" class="icon-bar" src="https://github.com/loyti/images/blob/master/white+t%20(1).png?raw=true">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          </div>
+          <h3 class="navbar-brand" id="heading_name" style="margin-top:0px; margin-bottom:0px;">Random Task</h3>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/">Home</a></li>
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/users">Users</a></li>
+                <li><a style="margin-top:0px; margin-bottom:0px;" class="nav-link top_space" href="/count">Counter</a></li>
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/survey">Survey</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-1"></div>
+      <div id="usersHead" class="col-md-10 jumbotron">
+        <h1><%= ctitle %></h1>
+        <h2 id="uCounter">Counter: <%= counter %></h2>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <button><form action='/count' class="form-horizontal" method='post' id="countingUp">
+          <input type="hidden" id="countChange" value=1>
+          <input type='submit' class="btn btn-success" value='Count Up'>
+        </form>
+        <form action='/countdown' class="form-horizontal" method='post' id="countingDown">
+          <input type="hidden" id="countChange" value=-1>
+          <input type='submit' class="btn btn-success" value='Count Down'>
+        </form>
+        <form action='/countReset' class="form-horizontal" method='post' id="countingReset">
+          <input type='submit' class="btn btn-success" value='Reset Count'>
+        </form>
+      </div>
+      <div class="col-md-4"></div>
+</body>
+</html>

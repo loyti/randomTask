@@ -1,0 +1,78 @@
+<html>
+<head>
+  <link rel='stylesheet' type='text/css' href='./style.css'>
+  <link rel='stylesheet' type='text/css' href='./bootstrap.css'>
+  <link rel='stylesheet' type='text/css' href='./boostrap-theme.css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+  <nav class="navbar-inverse">
+      <div class="container-fluid">
+          <div class="navbar-header">
+            <img id="logo" class="icon-bar" src="https://github.com/loyti/images/blob/master/white+t%20(1).png?raw=true">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          </div>
+          <h3 class="navbar-brand" id="heading_name" style="margin-top:0px; margin-bottom:0px;">Random Task</h3>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/">Home</a></li>
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/users">Users</a></li>
+                <li><a style="margin-top:0px; margin-bottom:0px;" class="nav-link top_space" href="/count">Counter</a></li>
+                <li><a style="margin-top:0px;" class="nav-link top_space" href="/survey">Survey</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-1"></div>
+      <div id="usersHead" class="col-md-10 jumbotron">
+        <h1><%= utitle %></h1>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h2>User DB Entry Form</h2>
+        <form action='/users' class="form-horizontal" method='post'>
+          <div class="form-group">
+            <label>Name:
+              <input class="form-control" type='text' name='name'>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Email:
+              <input class="form-control"type='text' name='email'>
+            </label>
+          </div>
+          <input type='submit' class="btn btn-success" value='Create User'>
+        </form>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <h2>Here are all the users:</h2>
+        <hr>
+        <% for (var x in users) { %>
+        <h3>Name: <%= users[x].name %></h3>
+        <h4>Email: <%= users[x].email %></h4>
+        <hr>
+        <% } %>
+      </div>
+      <div class="col-md-4"></div>
+    </div>
+  </div>
+</body>
+</html>
